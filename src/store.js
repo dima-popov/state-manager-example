@@ -16,14 +16,6 @@ const store = {
   },
 };
 
-const StoreContext = createContext(store);
-
-function StoreProvider({ children }) {
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
-}
-
 function reducer(state, action) {
   switch (action.type) {
     case "increment":
@@ -39,8 +31,19 @@ function reducer(state, action) {
   return state;
 }
 
-function dispatch(action) {
-  store.notify(action);
+const StoreContext = createContext(null);
+
+function StoreProvider({ children, store }) {
+  return (
+    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
+  );
+}
+
+function useDispatch() {
+  const store = useContext(StoreContext);
+  return (action) => {
+    store.notify(action);
+  };
 }
 
 function useSelector(selectFunc = (arg) => arg) {
@@ -61,4 +64,4 @@ function useSelector(selectFunc = (arg) => arg) {
   return state;
 }
 
-export { StoreProvider, useSelector, dispatch };
+export { StoreProvider, useSelector, useDispatch, store };

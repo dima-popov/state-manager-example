@@ -1,8 +1,8 @@
-import { StoreProvider, useSelector, dispatch } from "./store";
+import { StoreProvider, useSelector, useDispatch, store } from "./store";
 
 function App() {
   return (
-    <StoreProvider>
+    <StoreProvider store={store}>
       <ChildA />
       <ChildB />
       <ChildC />
@@ -14,6 +14,7 @@ function App() {
 function ChildA() {
   console.log("ChildA");
   const state = useSelector((state) => state.value);
+  const dispatch = useDispatch();
   return (
     <>
       <div>Child A</div>
