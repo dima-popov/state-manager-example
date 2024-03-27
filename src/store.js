@@ -1,20 +1,25 @@
 import { createContext, useState, useEffect, useContext } from "react";
 
-const store = {
-  state: { value: 0 },
-  observers: [],
-  notify(action) {
-    this.state = reducer({ ...this.state }, action);
-    this.observers.forEach((observer) => observer(this.state));
-  },
-  subscribe(observer) {
-    this.observers.push(observer);
-  },
+function createStore(obj) {
+  return new (function () {
+    this.state = obj.state;
+    this.observers = [];
+    this.notify = (action) => {
+      this.state = obj.reducer({ ...this.state }, action);
+      this.observers.forEach((observer) => observer(this.state));
+    };
 
-  unsubscribe(observer) {
-    this.observers = this.observers.filter((obs) => obs !== observer);
-  },
-};
+    this.subscribe = (observer) => {
+      this.observers.push(observer);
+    };
+
+    this.unsubscribe = (observer) => {
+      this.observers = this.observers.filter((obs) => obs !== observer);
+    };
+  })();
+}
+
+const store = createStore({ state: { value: 0 }, reducer: reducer });
 
 function reducer(state, action) {
   switch (action.type) {
