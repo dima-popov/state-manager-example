@@ -1,6 +1,6 @@
 # Description
 
-This project is an example of simple state manager. It is for teaching purpose only. (Use Redux for production.)
+This project is an example of simple state manager. It is for educational purpose only. (Use Redux for production.)
 
 ## Available Scripts
 
